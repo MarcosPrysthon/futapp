@@ -8,24 +8,14 @@ const UserSchema = mongoose.Schema({
     },
     "email":{
         type: String,
-        required: true,
+        required: true
     },
     "password":{
         type: String,
         required: true,
+        min: 6,
+        max: 1024
     },
-    "DD":{
-        type: Number,
-        default: 0
-    },
-    "goals":{
-        type: Number,
-        default: 0
-    },
-    "assists":{
-        type: Number,
-        default: 0
-    }
 });
 
 module.exports = mongoose.model('User', UserSchema);

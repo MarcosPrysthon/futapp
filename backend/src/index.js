@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
 
 const app = express();
-mongoose.connect("'" + process.env.DB_CONNECTION + "'", { useNewUrlParser: true }, () => console.log('connected'))
+mongoose.connect(process.env.DB_CONNECTION, { useUnifiedTopology: true, useNewUrlParser: true }, () => console.log('connected'))
 
 app.use(express.json());
 app.use(routes);
