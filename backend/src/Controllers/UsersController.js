@@ -5,7 +5,6 @@ const validation = require('../validation');
 module.exports = {
 
     async delete(req, res){
-
         const { _id } = req.params;
         let user = await User.findById(_id);
         if(user){
@@ -17,45 +16,37 @@ module.exports = {
         return res.status(400).json({
             error: "User does not exist"
         });
-        
     },
 
     async index(req, res){
-        
-        try{   
-            const { name } = req.body;
-            let user = await User.findOne({ name });
-            if(!user) return res.json({
-                error: "User does not exist"
-            })
-    
-            return res.json(user);
-            
-        } catch(e){
-            return res.status(400).json({ error: e })
-        }
+        const { name } = req.body;
+        let user = await User.findOne({ name });
+        if(!user) return res.json({
+            error: "User does not exist"
+        })
 
+        return res.json(user);
     },
 
     async store(req, res){
-
-        const { error } = validation.registerValidation(req.body);
+        const { error } = validation.userRegisterValidation(req.body);
         if(error) return res.json(error.details[0].message);
 
-        try{
-            const { name, email, password } = req.body;
-                
-                let user = await User.create({
-                    name,
-                    email,
-                    password
-                })
+        const { name, email, password } = req.body;
 
-                return res.json(user);
+        let user = await User.findOne({
+            name
+        })
 
-        } catch(e){
-            return res.status(400).json({ error: e });
-        }
+        if(user) return res.json(`User ${name} already exists`);
+        
+        user = await User.create({
+            name,
+            email,
+            password
+        })
+
+        return res.json(user);
     }
     
 }
