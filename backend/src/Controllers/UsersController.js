@@ -1,5 +1,6 @@
 //index, store, delet
 const User = require('../Models/User');
+const bcrypt = require('bcrypt');
 const validation = require('../validation');
 
 module.exports = {
@@ -35,15 +36,18 @@ module.exports = {
         const { name, email, password } = req.body;
 
         let user = await User.findOne({
-            name
+            email
         })
 
-        if(user) return res.json(`User ${name} already exists`);
+        if(user) return res.json(`Email ${email} already exists`);
+
+        const salt = await bcrypt.genSalt(10);
+        const hashPass = await bcrypt.hash(password, salt);
         
         user = await User.create({
             name,
             email,
-            password
+            password: hashPass 
         })
 
         return res.json(user);

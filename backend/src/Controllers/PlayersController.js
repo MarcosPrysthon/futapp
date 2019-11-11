@@ -8,23 +8,29 @@ module.exports = {
         if(error) return res.json(error.details[0].message);
 
         const { name } = req.body;
-        let arr_names = name.split(',').map(player => player.trim());
+        let arrNames = name.split(',').map(player => player.trim());
+        
 
-        arr_names.map( async (player_name) => {
-            let player = await Player.findOne({ name: player_name });
+        arrNames.map( async (playerName) => {
+            let player = await Player.findOne({ name: playerName });
             if(!player){
                 player = await Player.create({
-                    name: player_name
+                    name: playerName
                 })
             }
-        }) 
+        })
         
-        const players = await Player.find()
+        const players = await Player.find();
         return res.json(players);
     },
 
     async index(req, res){
         const players = await Player.find();
+        return res.json(players);
+    },
+
+    async delete(req, res){
+        const players = await Player.deleteMany();
         return res.json(players);
     }
 
