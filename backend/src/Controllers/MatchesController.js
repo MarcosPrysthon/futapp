@@ -1,10 +1,11 @@
 const Match = require('../Models/Match');
 const Player = require('../Models/Player');
+const User = require('../Models/User');
 const validation = require('../validation');
 
 module.exports = {
 
-    async update(req, res){
+    async update(req, res){ 
         const { players_array } = req.body;
         const { match_id } = req.params;
 
@@ -17,7 +18,7 @@ module.exports = {
             if(player){
                copied_arr.push(player);
             }
-        }     
+        }
 
         match = await Match.updateOne({
             players: copied_arr
@@ -30,18 +31,18 @@ module.exports = {
         const { error } = validation.matchRegisterValidation(req.body);
         if(error) return res.json(error.details[0].message);
 
-            const { name, day, hour } = req.body;
-            let match = await Match.findOne({ name: name });
+        const { name, day, hour } = req.body;
+        let match = await Match.findOne({ name: name });
 
-            if(match) return res.json({ erro: `Match ${name} already exists` });
-                     
-            match = await Match.create({
-                name,
-                day,
-                hour
-            });
+        if(match) return res.json({ erro: `Match ${name} already exists` });
+                    
+        match = await Match.create({
+            name,
+            day,
+            hour
+        });
 
-            return res.json(match);
+        return res.json(match);
        
     },
 
