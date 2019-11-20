@@ -11,18 +11,20 @@ export default function Login({ navigation }) {
     const [password, setPassword] = useState("");
 
     async function handleClick(){
-        const response = await api.post('/login', {
-            email,
-            password
-        });
-
-        console.log(response);
-
-        // const authToken = response.headers.auth_token;
-        // console.log(authToken);
-        // await AsyncStorage.setItem('auth_token', authToken);
-
-        navigation.navigate('Home');
+        try{
+            const response = await api.post('/login', {
+                email,
+                password
+            });
+            
+            const authToken = response.data;
+            console.log(authToken);
+            await AsyncStorage.setItem('auth-token', authToken);
+    
+            navigation.navigate('Home');
+        } catch(e){
+            console.log("Email ou senha incorretos");
+        }
     }
 
 
