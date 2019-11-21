@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { Platform, View, Text, TextInput, KeyboardAvoidingView, StyleSheet, AsyncStorage } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import LoginFailed from '../Components/LoginFailed';
 import api from '../services/api';
-
-// import { Container } from './styles';
 
 export default function Login({ navigation }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loginFailed, setLoginFailed] = useState(false);
 
     async function handleClick(){
         try{
@@ -23,7 +23,7 @@ export default function Login({ navigation }) {
     
             navigation.navigate('Home');
         } catch(e){
-            console.log("Email ou senha incorretos");
+            setLoginFailed(true);
         }
     }
 
@@ -59,6 +59,9 @@ export default function Login({ navigation }) {
                 onPress={handleClick}>
                     <Text style={styles.btntxt}>Entrar</Text>
                 </TouchableOpacity>
+                {loginFailed ? (
+                    <LoginFailed />
+                ) : null}
             </View>
         </KeyboardAvoidingView>
     );
@@ -110,6 +113,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 2,
         marginTop: 20,
-
     }
 })
