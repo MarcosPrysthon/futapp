@@ -11,7 +11,7 @@ router.post('/users', UserController.store);
 router.get('/users', UserController.index);
 router.delete('/users/:_id', UserController.delete);
 
-router.post('/matches', verify, MatchController.store);
+router.post('/matches/:user_id', verify, MatchController.store);
 router.put('/matches/:match_id', verify, MatchController.update);
 router.get('/matches/:match_id', verify,  MatchController.index);
 
