@@ -37,11 +37,9 @@ module.exports = {
         if(error) return res.json(error.details[0].message);
 
         const { name, day, hour } = req.body;
-        const { user_id } = req.params;
 
         let match = await Match.findOne({ name: name });
-        let user = await User.findById(user_id);
-
+        
         if(match) return res.json({ erro: `Match ${name} already exists` });
                     
         match = await Match.create({

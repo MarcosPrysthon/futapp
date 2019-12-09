@@ -1,5 +1,6 @@
 //index, store, delet
 const User = require('../Models/User');
+const Match = require('../Models/Match');
 const bcrypt = require('bcrypt');
 const validation = require('../validation');
 
@@ -48,6 +49,23 @@ module.exports = {
             name,
             email,
             password: hashPass 
+        })
+
+        return res.json(user);
+    },
+
+    async update(req, res){
+        const { match_id } = req.params;
+        const match = await Match.findById({ match_id });
+
+        const { _id } = req.body;
+        let user = await User.findById({ _id });
+
+        let mathcesArr = user.matches.slice();
+        mathcesArr.push(match);
+
+        let user = await User.updateOne({
+            matches: mathcesArr
         })
 
         return res.json(user);
